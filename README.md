@@ -139,3 +139,9 @@ Explainability is a core invariant.
 
 If the tool cannot explain *why* it produced an output,
 that output should not exist.
+
+
+## Open source grows through shared ideas.
+
+If this project was useful to you, a ⭐️ on GitHub helps more people discover it.  
+Issues, suggestions, and pull requests are always appreciated.
