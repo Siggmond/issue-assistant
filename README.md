@@ -1,5 +1,13 @@
 # Issue Assistant
 
+[![PyPI version](https://img.shields.io/pypi/v/issue-assistant.svg)](https://pypi.org/project/issue-assistant/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/issue-assistant.svg)](https://pypi.org/project/issue-assistant/)
+[![Python versions](https://img.shields.io/pypi/pyversions/issue-assistant.svg)](https://pypi.org/project/issue-assistant/)
+[![License](https://img.shields.io/pypi/l/issue-assistant.svg)](LICENSE)
+[![Tests](https://github.com/Siggmond/issue-assistant/actions/workflows/issue-assistant.yml/badge.svg)](https://github.com/Siggmond/issue-assistant/actions)
+[![GitHub stars](https://img.shields.io/github/stars/Siggmond/issue-assistant.svg?style=social)](https://github.com/Siggmond/issue-assistant)
+
+
 Issue Assistant is a deterministic GitHub issue triage engine designed for maintainers who want
 consistent, explainable signals without automation they can’t trust.
 
