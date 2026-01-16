@@ -3,15 +3,45 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-readme = "README.md"
-license = { file = "LICENSE" }
 name = "issue-assistant"
 version = "0.2.1"
 description = "Deterministic-first GitHub issue triage engine"
+readme = "README.md"
 requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+
 dependencies = [
   "requests>=2.31.0",
 ]
+
+keywords = [
+  "github",
+  "issues",
+  "triage",
+  "maintainers",
+  "automation",
+  "cli",
+  "deterministic",
+]
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Bug Tracking",
+  "Topic :: Software Development :: Quality Assurance",
+  "Topic :: Utilities",
+]
+
+[project.urls]
+Homepage = "https://github.com/Siggmond/issue-assistant"
+Repository = "https://github.com/Siggmond/issue-assistant"
+Issues = "https://github.com/Siggmond/issue-assistant/issues"
 
 [project.optional-dependencies]
 dev = [
@@ -22,7 +52,7 @@ dev = [
 issue-assistant = "issue_assistant.cli:main"
 
 [tool.setuptools]
-package-dir = {"" = "src"}
+package-dir = { "" = "src" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
