@@ -1,0 +1,21 @@
+# Python build artifacts
+build/
+dist/
+*.egg-info/
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Virtual environments
+.venv/
+.env
+
+# Issue Assistant runtime artifacts
+.issue-assistant/
+.issue-assistant-test/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db

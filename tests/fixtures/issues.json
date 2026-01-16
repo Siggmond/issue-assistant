@@ -1,0 +1,26 @@
+[
+  {
+    "number": 1,
+    "title": "App crashes on startup",
+    "body": "When I run the app, it crashes immediately.\n\nSteps:\n1. Run app\n2. Crash\n\nExpected: app starts",
+    "state": "open",
+    "labels": [],
+    "comments": []
+  },
+  {
+    "number": 2,
+    "title": "App crashes on startup",
+    "body": "Same issue as #1. Getting ValueError: invalid config.",
+    "state": "open",
+    "labels": [],
+    "comments": []
+  },
+  {
+    "number": 3,
+    "title": "How do I configure the API key?",
+    "body": "I can’t find documentation for setting the API key.",
+    "state": "open",
+    "labels": [],
+    "comments": []
+  }
+]

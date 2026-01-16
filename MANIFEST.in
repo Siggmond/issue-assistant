@@ -1,0 +1,11 @@
+include README.md
+include LICENSE
+include pyproject.toml
+
+recursive-include src/issue_assistant *.py
+
+prune tests
+prune docs
+prune .github
+
+global-exclude __pycache__ *.py[cod] .DS_Store

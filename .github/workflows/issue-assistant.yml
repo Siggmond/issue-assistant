@@ -1,0 +1,48 @@
+name: Issue Assistant
+
+on:
+  issues:
+    types: [opened, edited, reopened]
+  schedule:
+    - cron: "0 9 * * 1" # Mondays 09:00 UTC
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  issue-triage:
+    if: ${{ github.event_name == 'issues' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Issue Assistant (single issue)
+        uses: siggmond/issue-assistant@v0.2.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          governance_mode: ${{ vars.ISSUE_ASSISTANT_GOVERNANCE_MODE || 'dry-run' }}
+          issue_number: ${{ github.event.issue.number }}
+          output_dir: .issue-assistant
+          publish: upload
+          auto_comment: "true"
+          artifacts_url_prefix: ${{ format('https://github.com/{0}/blob/{1}/.issue-assistant', github.repository, github.sha) }}
+
+  weekly-digest:
+    if: ${{ github.event_name == 'schedule' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Issue Assistant (repo-wide)
+        uses: siggmond/issue-assistant@v0.2.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          governance_mode: ${{ vars.ISSUE_ASSISTANT_GOVERNANCE_MODE || 'dry-run' }}
+          limit: "200"
+          include_pull_requests: "false"
+          output_dir: .issue-assistant
+          publish: upload
+          auto_comment: "false"

@@ -1,0 +1,126 @@
+name: "Issue Assistant"
+description: "Deterministic-first GitHub issue triage engine (thin wrapper around the issue-assistant CLI)."
+
+inputs:
+  github_token:
+    description: "GitHub token for API access."
+    required: true
+  governance_mode:
+    description: "Trust mode: dry-run|strict|aggressive"
+    required: false
+    default: "dry-run"
+  limit:
+    description: "Max issues to fetch/analyze (repo-wide runs)."
+    required: false
+    default: "200"
+  include_pull_requests:
+    description: "Include pull requests from /issues endpoint (true/false)."
+    required: false
+    default: "false"
+  issue_number:
+    description: "Optional: analyze just a single issue number (recommended for issue-triggered runs)."
+    required: false
+    default: ""
+  output_dir:
+    description: "Output directory for artifacts."
+    required: false
+    default: ".issue-assistant"
+  publish:
+    description: "How to publish artifacts: upload|commit|none"
+    required: false
+    default: "upload"
+  auto_comment:
+    description: "Governance-aware auto-commenting (true/false). dry-run never comments."
+    required: false
+    default: "false"
+  artifacts_url_prefix:
+    description: "URL prefix used to link to committed artifacts (e.g. https://github.com/<owner>/<repo>/blob/<ref>/.issue-assistant)."
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install Issue Assistant
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install issue-assistant
+
+    - name: Run analysis
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github_token }}
+      run: |
+        set -euo pipefail
+
+        repo="${GITHUB_REPOSITORY}"
+        out_dir="${{ inputs.output_dir }}"
+        mode="${{ inputs.governance_mode }}"
+
+        args=("analyze" "--github-token" "$GH_TOKEN" "--repo" "$repo" "--output-dir" "$out_dir" "--governance-mode" "$mode")
+
+        if [ -n "${{ inputs.issue_number }}" ]; then
+          args+=("--issue-number" "${{ inputs.issue_number }}")
+        else
+          args+=("--limit" "${{ inputs.limit }}")
+          if [ "${{ inputs.include_pull_requests }}" = "true" ]; then
+            args+=("--include-pull-requests")
+          fi
+        fi
+
+        if [ "${{ inputs.auto_comment }}" = "true" ]; then
+          args+=("--auto-comment")
+          if [ -n "${{ inputs.artifacts_url_prefix }}" ]; then
+            args+=("--artifacts-url-prefix" "${{ inputs.artifacts_url_prefix }}")
+          fi
+        fi
+
+        issue-assistant "${args[@]}"
+
+    - name: Publish artifacts (commit)
+      if: ${{ inputs.publish == 'commit' }}
+      shell: bash
+      run: |
+        set -euo pipefail
+        git config user.name "issue-assistant[bot]"
+        git config user.email "issue-assistant[bot]@users.noreply.github.com"
+        git add "${{ inputs.output_dir }}"
+        if git diff --cached --quiet; then
+          echo "No artifact changes to commit."
+          exit 0
+        fi
+        git commit -m "chore: update Issue Assistant artifacts"
+        git push
+
+    - name: Publish artifacts (upload)
+      if: ${{ inputs.publish == 'upload' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: issue-assistant-artifacts
+        path: ${{ inputs.output_dir }}
+
+    - name: Summary
+      shell: bash
+      run: |
+        {
+          echo "## Issue Assistant";
+          echo "";
+          echo "- governance_mode: `${{ inputs.governance_mode }}`";
+          echo "- publish: `${{ inputs.publish }}`";
+          if [ -n "${{ inputs.issue_number }}" ]; then
+            echo "- issue_number: `${{ inputs.issue_number }}`";
+          else
+            echo "- limit: `${{ inputs.limit }}`";
+          fi
+          if [ "${{ inputs.auto_comment }}" = "true" ]; then
+            echo "- auto_comment: enabled (dry-run is a hard no-op)";
+          else
+            echo "- auto_comment: disabled";
+          fi
+        } >> "$GITHUB_STEP_SUMMARY"
