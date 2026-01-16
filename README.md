@@ -1,7 +1,7 @@
 # Issue Assistant
 
 [![PyPI version](https://img.shields.io/pypi/v/issue-assistant.svg)](https://pypi.org/project/issue-assistant/)
-[![PyPI downloads](https://img.shields.io/pypi/dm/issue-assistant.svg)](https://pypi.org/project/issue-assistant/)
+[![Downloads](https://img.shields.io/pypi/dw/issue-assistant.svg)](https://pypi.org/project/issue-assistant/)
 [![Python versions](https://img.shields.io/pypi/pyversions/issue-assistant.svg)](https://pypi.org/project/issue-assistant/)
 [![License](https://img.shields.io/pypi/l/issue-assistant.svg)](LICENSE)
 [![Tests](https://github.com/Siggmond/issue-assistant/actions/workflows/issue-assistant.yml/badge.svg)](https://github.com/Siggmond/issue-assistant/actions)
