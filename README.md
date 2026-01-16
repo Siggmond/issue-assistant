@@ -118,7 +118,7 @@ A typical run produces:
 - EXPLAINABILITY.md / explainability.json
 - per-issue playbooks and explainability JSON
 
-Example outputs are included under `docs/screenshots/`.
+Example outputs are included under `docs/`.
 
 ---
 
